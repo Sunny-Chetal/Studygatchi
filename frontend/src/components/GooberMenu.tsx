@@ -19,6 +19,7 @@ interface Props {
   level: number;
   money: number;
   currentHealth: number;
+  isFocusMode: boolean;
 }
 
 export default function GooberMenu({
@@ -30,6 +31,7 @@ export default function GooberMenu({
   level,
   money,
   currentHealth,
+  isFocusMode,
 }: Props) {
   const gooberName = "Goober";
   const [currentPage, setPage] = useState("home");
@@ -141,6 +143,7 @@ export default function GooberMenu({
               (currentPage === "food" ? "active" : "")
             }
             onClick={() => setPage("food")}
+            disabled={isFocusMode}
           >
             Food
           </button>
@@ -151,6 +154,7 @@ export default function GooberMenu({
               (currentPage === "play" ? "active" : "")
             }
             onClick={() => setPage("play")}
+            disabled={isFocusMode}
           >
             Play
           </button>
@@ -161,6 +165,7 @@ export default function GooberMenu({
               (currentPage === "gift" ? "active" : "")
             }
             onClick={() => setPage("gift")}
+            disabled={isFocusMode}
           >
             Gift
           </button>
@@ -176,21 +181,33 @@ export default function GooberMenu({
             width: "100%",
           }}
         >
-          {currentPage == "home" && (
-            <GooberInfo
-              setXP={setXP}
-              setLevel={setLevel}
-              setMoney={setMoney}
-              setHealth={setHealth}
-              currentXP={currentXP}
-              level={level}
-              money={money}
-              currentHealth={currentHealth}
-            />
+          {/* Replace an open interaction menu with a clear focus-mode message. */}
+          {isFocusMode ? (
+            <p role="status">
+              Goober is studying right now. Food, Play, and Gift are unavailable
+              during focus time.
+            </p>
+          ) : (
+            <>
+              {currentPage == "home" && (
+                <GooberInfo
+                  setXP={setXP}
+                  setLevel={setLevel}
+                  setMoney={setMoney}
+                  setHealth={setHealth}
+                  currentXP={currentXP}
+                  level={level}
+                  money={money}
+                  currentHealth={currentHealth}
+                />
+              )}
+              {currentPage == "play" && <GooberPlayMenu pageSetter={setPage} />}
+              {currentPage == "food" && (
+                <GooberFoodMenu pageSetter={setPage} money={money} />
+              )}
+              {currentPage == "gift" && <GooberGiftMenu pageSetter={setPage} />}
+            </>
           )}
-          {currentPage == "play" && <GooberPlayMenu pageSetter={setPage} />}
-          {currentPage == "food" && <GooberFoodMenu pageSetter={setPage} money={money} />}
-          {currentPage == "gift" && <GooberGiftMenu pageSetter={setPage} />}
         </div>
       </div>
     </div>
