@@ -18,6 +18,8 @@ function App() {
   const [level, setLevel] = useState(9);
   const [money, setMoney] = useState(0);
   const [currentHealth, setHealth] = useState(50);
+  // Keep the timer's focus status available to Goober.
+  const [isFocusMode, setIsFocusMode] = useState(false);
 
   return (
     <ThemeProvider>
@@ -41,10 +43,14 @@ function App() {
             level={level}
             money={money}
             currentHealth={currentHealth}
+            isFocusMode={isFocusMode}
           />
           <Routes>
             <Route path="/settings" element={<SettingsMenu />} />
-            <Route path="/timer" element={<Timer />} />
+            <Route
+              path="/timer"
+              element={<Timer onFocusChange={setIsFocusMode} />}
+            />
             <Route path="/todo" element={<ToDoList />} />
           </Routes>
         </div>
